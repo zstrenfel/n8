@@ -4,8 +4,10 @@ var logger = require('morgan');
 var app = express();
 
 app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded());
 
-app.get('/webpage/count', (req, res) => {
+app.post('/webpage/count', (req, res) => {
   res.send('Hello World!');
 });
 
