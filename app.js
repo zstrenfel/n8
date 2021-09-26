@@ -1,11 +1,15 @@
-const express = require('express')
-const app = express()
-const PORT = 3000
+var express = require('express');
+var logger = require('morgan');
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+var app = express();
+var PORT = 3000;
+
+app.use(logger('dev'));
+
+app.get('/webpage/count', (req, res) => {
+  res.send('Hello World!');
+});
 
 app.listen(PORT, () => {
-  console.log(`Example app listening at http://localhost:${PORT}`)
-})
+  console.log(`Example app listening at http://localhost:${PORT}`);
+});
