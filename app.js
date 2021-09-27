@@ -1,7 +1,6 @@
 const express = require('express');
 const logger = require('morgan');
-
-const utils = require('./utils');
+const { parseWebpage } = require('./utils');
 
 const app = express();
 
@@ -16,7 +15,7 @@ app.post('/webpage/count', async (request, response, next) => {
       throw new Error('URL not specified.');
     }
 
-    const webpage = await utils.fetchWebpage(url);
+    const webpage = await parseWebpage(url);
     response.send('Hello World!');
   } catch (error) {
     next(error);

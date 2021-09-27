@@ -1,12 +1,10 @@
 const request = require('supertest');
-const axios = require('axios');
 const app = require('../../app');
+const utils = require('../../utils');
 
-jest.mock('axios');
+jest.mock('../../utils');
 
-axios.get.mockResolvedValue({ data: '<div>Hello World!</div>' });
-
-describe('GET webpage/count', () => {
+describe('POST webpage/count', () => {
   it('should accept application/json"', async () => {
     const response = await request(app)
       .post('/webpage/count')
