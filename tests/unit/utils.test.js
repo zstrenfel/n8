@@ -24,12 +24,12 @@ describe('parseWebpage', () => {
   it('should handle text/plain websites by splitting on new lines', async () => {
     axios.get.mockResolvedValue({
       headers: { 'content-type': 'text/plain' },
-      data: `${EXAMPLE_TEXT}\n${EXAMPLE_TEXT}`,
+      data: EXAMPLE_TEXT,
     });
 
-    expected = Array(2).fill(EXAMPLE_TEXT);
+    const expected = EXAMPLE_TEXT;
     const actual = await parseWebpage('https://digiorno.com/big.txt');
-    expect(actual).toEqual(expect.arrayContaining(expected));
+    expect(actual).toEqual(expected);
   });
 
   it('should handle html websites by returning text only', async () => {
@@ -38,17 +38,21 @@ describe('parseWebpage', () => {
       data: webpage,
     });
 
-    expected = EXAMPLE_TEXT.split(' ');
+    const expected_strings = EXAMPLE_TEXT.split(' ');
     const actual = await parseWebpage('https://digiorno.com');
-    expect(actual).toEqual(expect.arrayContaining(expected));
+    expected_strings.forEach(expected => {
+      expect(actual).toEqual(expect.stringContaining(expected));
+    });
   });
 });
 
 describe('extractText', () => {
   it('should extract text from webpage text nodes"', () => {
-    const expected = EXAMPLE_TEXT.split(' ');
+    const expected_strings = EXAMPLE_TEXT.split(' ');
     const actual = extractText(webpage);
-    expect(actual).toEqual(expect.arrayContaining(expected));
+    expected_strings.forEach(expected => {
+      expect(actual).toEqual(expect.stringContaining(expected));
+    });
   });
 });
 

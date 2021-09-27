@@ -9,7 +9,7 @@ async function parseWebpage(url) {
     const response = await axios.get(url);
 
     if (response.headers['content-type'] == 'text/plain') {
-      return response.data.split('\n');
+      return response.data;
     }
 
     return extractText(response.data);
@@ -37,7 +37,7 @@ function extractText(htmlString) {
     stack.push(...node.childNodes);
   }
 
-  return text;
+  return text.join(' ');
 }
 
 function countWords(text) {
