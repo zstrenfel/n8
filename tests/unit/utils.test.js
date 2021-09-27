@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { parseWebpage, extractText } = require('../../utils');
+const { parseWebpage, extractText, countWords } = require('../../utils');
 
 jest.mock('axios');
 
@@ -49,5 +49,18 @@ describe('extractText', () => {
     const expected = EXAMPLE_TEXT.split(' ');
     const actual = extractText(webpage);
     expect(actual).toEqual(expect.arrayContaining(expected));
+  });
+});
+
+describe('countWords', () => {
+  it('should count the words for the given text', () => {
+    const expected = {
+      Digiorno: 1,
+      pizza: 1,
+      is: 1,
+      delicious: 1,
+    };
+    const actual = countWords(EXAMPLE_TEXT);
+    expect(actual).toStrictEqual(expected);
   });
 });

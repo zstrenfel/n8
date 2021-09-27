@@ -40,9 +40,22 @@ function extractText(htmlString) {
   return text;
 }
 
-function countWords(text) {}
+function countWords(text) {
+  const words = text.split(' ');
+  const counts = {};
+  for (let i = 0; i < words.length; i++) {
+    // Quick'n dirty to remove punctuation and other random chars.
+    let word = words[i].replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\"\']/g, '');
+    if (!(word in counts)) {
+      counts[word] = 0;
+    }
+    counts[word]++;
+  }
+  return counts;
+}
 
 module.exports = {
-  parseWebpage: parseWebpage,
-  extractText: extractText,
+  parseWebpage,
+  extractText,
+  countWords,
 };
