@@ -59,7 +59,7 @@ describe('extractText', () => {
 describe('countWords', () => {
   it('should count the words for the given text', () => {
     const expected = {
-      Digiorno: 1,
+      digiorno: 1,
       pizza: 1,
       is: 1,
       delicious: 1,

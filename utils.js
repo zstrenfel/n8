@@ -45,7 +45,9 @@ function countWords(text) {
   const counts = {};
   for (let i = 0; i < words.length; i++) {
     // Quick'n dirty to remove punctuation and other random chars.
-    let word = words[i].replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\"\']/g, '');
+    let word = words[i]
+      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\"\']/g, '')
+      .toLowerCase();
     if (!(word in counts)) {
       counts[word] = 0;
     }
