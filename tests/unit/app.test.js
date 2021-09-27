@@ -4,7 +4,7 @@ const utils = require('../../utils');
 
 jest.mock('../../utils');
 
-describe('GET webpage/count', () => {
+describe('POST webpage/count', () => {
   it('should accept application/json"', async () => {
     const response = await request(app)
       .post('/webpage/count')
