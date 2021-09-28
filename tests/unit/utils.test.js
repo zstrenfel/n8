@@ -54,6 +54,13 @@ describe('extractText', () => {
       expect(actual).toEqual(expect.stringContaining(expected));
     });
   });
+
+  it('should ignore content from script tags', () => {
+    const expected = 'garlic bread';
+    const scripText = `<script>makeMe()</script><div>${expected}</div>`;
+    const actual = extractText(scripText);
+    expect(actual).toEqual(expected);
+  });
 });
 
 describe('countWords', () => {
