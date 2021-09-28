@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon ./bin/www",
-    "test": "jest",
+    "test": "jest --testPathPattern=tests/unit",
+    "test:integration": "jest --testPathPattern=tests/integration",
     "prepare": "husky install"
   },
   "author": "Zach Strenfel",
