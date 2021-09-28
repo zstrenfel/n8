@@ -5,7 +5,7 @@ const { JSDOM } = jsdom;
 const TEXT_NODE = 3;
 const SCRIPT_TAG = 'SCRIPT';
 
-async function parseWebpage(url) {
+export async function parseWebpage(url: string) {
   try {
     const response = await axios.get(url);
 
@@ -17,10 +17,11 @@ async function parseWebpage(url) {
     return extractText(response.data);
   } catch (error) {
     console.log(error);
+    throw new Error('Could not access website URL.');
   }
 }
 
-function extractText(htmlString) {
+export function extractText(htmlString: string) {
   // Iterates through DOM nodes in order to find text elements.
   const dom = new JSDOM(htmlString);
   const text = [];
@@ -34,7 +35,7 @@ function extractText(htmlString) {
     }
 
     if (node.nodeType == TEXT_NODE) {
-      nodeText = node.textContent.trim();
+      const nodeText = node.textContent.trim();
       if (nodeText) {
         text.push(nodeText);
       }
@@ -47,22 +48,22 @@ function extractText(htmlString) {
 }
 
 // Split out to make it easier to test :^)
-function splitText(text) {
+export function splitText(text: string) {
   return text.replace(/(\r\n|\n|\r)/g, ' ').split(' ');
 }
 
 // Split out to make it easier to test :^)
-function formatWord(word) {
+export function formatWord(word: string) {
   return word
     .trim()
     .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\[\]\"]/g, '')
     .toLowerCase();
 }
 
-function countWords(text) {
-  counts = {};
+export function countWords(text: string) {
+  const counts: { [index: string]: number } = {};
   splitText(text).forEach(rawWord => {
-    word = formatWord(rawWord);
+    const word = formatWord(rawWord);
     if (!(word in counts)) {
       counts[word] = 0;
     }
@@ -71,9 +72,3 @@ function countWords(text) {
 
   return counts;
 }
-
-module.exports = {
-  parseWebpage,
-  extractText,
-  countWords,
-};

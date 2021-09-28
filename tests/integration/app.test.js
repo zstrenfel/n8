@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../../app');
+const app = require('../../dist/app');
 
 describe('POST webpage/count', () => {
   it('should handle application/json requests"', async () => {

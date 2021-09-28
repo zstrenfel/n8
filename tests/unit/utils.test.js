@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { parseWebpage, extractText, countWords } = require('../../utils');
+const { parseWebpage, extractText, countWords } = require('../../dist/utils');
 
 jest.mock('axios');
 

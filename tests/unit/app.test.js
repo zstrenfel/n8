@@ -1,8 +1,8 @@
 const request = require('supertest');
-const app = require('../../app');
-const utils = require('../../utils');
+const app = require('../../dist/app');
+const utils = require('../../dist/utils');
 
-jest.mock('../../utils');
+jest.mock('../../dist/utils');
 
 EXAMPLE_COUNTS = {
   spongebob: 1,
