@@ -3,11 +3,13 @@ const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 
 const TEXT_NODE = 3;
+const SCRIPT_TAG = 'SCRIPT';
 
 async function parseWebpage(url) {
   try {
     const response = await axios.get(url);
 
+    // Plain text documents don't have HTML nodes to parse...
     if (response.headers['content-type'] == 'text/plain') {
       return response.data;
     }
@@ -26,6 +28,10 @@ function extractText(htmlString) {
 
   while (stack.length) {
     const node = stack.pop();
+    // Skip script tags, since we don't want to count that content.
+    if (node.nodeName == SCRIPT_TAG) {
+      continue;
+    }
 
     if (node.nodeType == TEXT_NODE) {
       nodeText = node.textContent.trim();
@@ -40,19 +46,29 @@ function extractText(htmlString) {
   return text.join(' ');
 }
 
+// Split out to make it easier to test :^)
+function splitText(text) {
+  return text.replace(/(\r\n|\n|\r)/g, ' ').split(' ');
+}
+
+// Split out to make it easier to test :^)
+function formatWord(word) {
+  return word
+    .trim()
+    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\[\]\"]/g, '')
+    .toLowerCase();
+}
+
 function countWords(text) {
-  const words = text.split(' ');
-  const counts = {};
-  for (let i = 0; i < words.length; i++) {
-    // Quick'n dirty to remove punctuation and other random chars.
-    let word = words[i]
-      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\"\']/g, '')
-      .toLowerCase();
+  counts = {};
+  splitText(text).forEach(rawWord => {
+    word = formatWord(rawWord);
     if (!(word in counts)) {
       counts[word] = 0;
     }
     counts[word]++;
-  }
+  });
+
   return counts;
 }
 
