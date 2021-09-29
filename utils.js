@@ -4,6 +4,8 @@ const { JSDOM } = jsdom;
 
 const TEXT_NODE = 3;
 const SCRIPT_TAG = 'SCRIPT';
+const STYLE_TAG = 'STYLE';
+const IGNORE_TAGS = [SCRIPT_TAG, STYLE_TAG];
 
 async function parseWebpage(url) {
   try {
@@ -29,8 +31,9 @@ function extractText(htmlString) {
 
   while (stack.length) {
     const node = stack.pop();
-    // Skip script tags, since we don't want to include that content.
-    if (node.nodeName == SCRIPT_TAG) {
+    // Skip script/style tags, since we don't want to include that content.
+    const { nodeName } = node;
+    if (IGNORE_TAGS.includes(nodeName)) {
       continue;
     }
 

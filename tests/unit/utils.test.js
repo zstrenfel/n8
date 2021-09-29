@@ -66,9 +66,9 @@ describe('extractText', () => {
     });
   });
 
-  it('should ignore content from script tags', () => {
-    const expected = 'garlic bread';
-    const scripText = `<script>makeMe()</script><div>${expected}</div>`;
+  it('should ignore content from script/style tags', () => {
+    const expected = 'personal pan-pizza';
+    const scripText = `<script>makeMe()</script><style>toppings { anchovies }</style><div>${expected}</div>`;
     const actual = extractText(scripText);
     expect(actual).toEqual(expected);
   });
