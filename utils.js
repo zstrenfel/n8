@@ -9,7 +9,9 @@ const IGNORE_TAGS = [SCRIPT_TAG, STYLE_TAG];
 
 async function parseWebpage(url) {
   try {
+    const t0 = new Date().getTime();
     const response = await axios.get(url);
+    console.debug(`GET on url ${url} in ${new Date().getTime() - t0}ms`);
 
     // Plain text documents don't have HTML nodes to parse...
     if (response.headers['content-type'] == 'text/plain') {
@@ -25,6 +27,8 @@ async function parseWebpage(url) {
 
 function extractText(htmlString) {
   // Iterates through DOM nodes in order to find text elements.
+  const t0 = new Date().getTime();
+
   const dom = new JSDOM(htmlString);
   const text = [];
   const stack = [dom.window.document.body];
@@ -48,6 +52,9 @@ function extractText(htmlString) {
   }
 
   // Returning as a string to keep parity with text/plain webpages.
+  console.debug(
+    `Extracted text from webpage in ${new Date().getTime() - t0}ms`,
+  );
   return text.join(' ');
 }
 
@@ -65,6 +72,7 @@ function formatWord(word) {
 }
 
 function countWords(text) {
+  t0 = new Date().getTime();
   counts = {};
   splitText(text).forEach(rawWord => {
     word = formatWord(rawWord);
@@ -74,6 +82,7 @@ function countWords(text) {
     counts[word]++;
   });
 
+  console.debug(`Words counted in ${new Date().getTime() - t0}ms`);
   return counts;
 }
 
