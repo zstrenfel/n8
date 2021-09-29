@@ -50,6 +50,11 @@ describe('parseWebpage', () => {
       expect(actual).toEqual(expect.stringContaining(expected));
     });
   });
+
+  it('should raise error on failure to fetch webpage.', async () => {
+    axios.get.mockRejectedValue(new Error('404!!!!!'));
+    await expect(parseWebpage('https://digiorno-is-bad.com')).rejects.toThrow();
+  });
 });
 
 describe('extractText', () => {

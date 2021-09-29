@@ -16,7 +16,8 @@ async function parseWebpage(url) {
 
     return extractText(response.data);
   } catch (error) {
-    console.log(error);
+    console.log(error.toJSON());
+    throw new Error(`Error fetching URL: ${url}`);
   }
 }
 
@@ -28,7 +29,7 @@ function extractText(htmlString) {
 
   while (stack.length) {
     const node = stack.pop();
-    // Skip script tags, since we don't want to count that content.
+    // Skip script tags, since we don't want to include that content.
     if (node.nodeName == SCRIPT_TAG) {
       continue;
     }
@@ -43,6 +44,7 @@ function extractText(htmlString) {
     stack.push(...node.childNodes);
   }
 
+  // Returning as a string to keep parity with text/plain webpages.
   return text.join(' ');
 }
 
