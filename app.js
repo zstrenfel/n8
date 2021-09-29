@@ -6,7 +6,7 @@ const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
 app.post('/webpage/count', async (request, response, next) => {
   try {
