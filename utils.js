@@ -76,4 +76,6 @@ module.exports = {
   parseWebpage,
   extractText,
   countWords,
+  splitText,
+  formatWord,
 };

@@ -1,5 +1,11 @@
 const axios = require('axios');
-const { parseWebpage, extractText, countWords } = require('../../utils');
+const {
+  parseWebpage,
+  extractText,
+  countWords,
+  splitText,
+  formatWord,
+} = require('../../utils');
 
 jest.mock('axios');
 
@@ -63,6 +69,36 @@ describe('extractText', () => {
   });
 });
 
+describe('splitText', () => {
+  it('should split text according to line breaks.', () => {
+    let text = 'Take-n-bake';
+    const expected = new Array(4).fill(text);
+
+    text += ['\n', '\r\n', '\r']
+      .map(lineBreak => `${lineBreak}${text}`)
+      .join('');
+    const actual = splitText(text);
+    expect(actual).toEqual(expected);
+  });
+});
+
+describe('formatWord', () => {
+  it('should remove unwanted punctuation.', () => {
+    const text = '[$$"#/piz{};z%=a:~~^^^~*]';
+    expect(formatWord(text)).toEqual('pizza');
+  });
+
+  it('should convert all chars to lowercase', () => {
+    const text = 'SCREAMINGFORPIZZA';
+    expect(formatWord(text)).toEqual(text.toLowerCase());
+  });
+
+  it('should convert all chars to lowercase', () => {
+    const text = '   pizza to my left';
+    expect(formatWord(text)).toEqual(text.trim());
+  });
+});
+
 describe('countWords', () => {
   it('should count the words for the given text', () => {
     const expected = {
@@ -71,7 +107,6 @@ describe('countWords', () => {
       is: 1,
       delicious: 1,
     };
-    const actual = countWords(EXAMPLE_TEXT);
-    expect(actual).toStrictEqual(expected);
+    expect(countWords(EXAMPLE_TEXT)).toStrictEqual(expected);
   });
 });
