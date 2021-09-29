@@ -10,34 +10,24 @@ EXAMPLE_COUNTS = {
 };
 
 describe('POST webpage/count', () => {
-  it('should accept application/json"', async () => {
+  it('should parse webpage on valid request"', async () => {
     const expected = EXAMPLE_COUNTS;
     utils.countWords.mockReturnValue(expected);
 
     const response = await request(app)
-      .post('/webpage/count')
-      .type('application/json')
-      .send({ url: 'https://spongebob.com' });
+      .get('/count')
+      .query({ url: 'https://spongebob.com' });
     expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual(expected);
-  });
-
-  it('should accept application/x-www-form-urlencoded"', async () => {
-    const expected = EXAMPLE_COUNTS;
-    utils.countWords.mockReturnValue(expected);
-
-    const response = await request(app)
-      .post('/webpage/count')
-      .type('application/x-www-form-urlencoded')
-      .send('url=https://krabbypatty.com');
-    expect(response.statusCode).toEqual(200);
+    expect(response.headers['content-type']).toEqual(
+      expect.stringContaining('application/json'),
+    );
     expect(response.body).toEqual(expected);
   });
 
   it('should return 500 if no url specified', async () => {
     const response = await request(app)
-      .post('/webpage/count')
-      .send({ patrick: 'star' });
+      .get('/count')
+      .query({ patrick: 'star' });
     expect(response.statusCode).toEqual(500);
   });
 });

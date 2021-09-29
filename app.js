@@ -5,12 +5,10 @@ const { parseWebpage, countWords } = require('./utils');
 const app = express();
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-app.post('/webpage/count', async (request, response, next) => {
+app.get('/count', async (request, response, next) => {
   try {
-    const url = request.body['url'];
+    const url = request.query['url'];
     if (!url) {
       throw new Error('URL not specified.');
     }
